@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 /*Desarrollar un sistema de gestión de donaciones para un refugio de animales en el lenguaje
 de programación C, que permita:
@@ -14,69 +15,102 @@ refugio (alimento, medicinas, mantenimiento, reparaciones, etc.).
 • Listado de artículos donados, cantidad, fecha de recepción.
 • Listar el detalle de donaciones junto con el donante que la ha realizado.
 • Listar cantidad de donaciones realizadas por donante.*/
+
+typedef struct destino{
+    char Nombre_destino;
+    int Max_Donaciones;
+}Destino;
+
 typedef struct Donation{
     char cedula[30];
     char fecha[20];
-    char tipo[20];
-    char descriccion[100];
-    char valor[20]; 
+    int tipo;
+    char descriccion[300];
+    int valor;
+     struct Donation *next;
 }Donation_t;
 
-typedef struct User
-{
-    char nombre[20];
+typedef struct User{
+    char nombre[25];
     char cedula[30];
     char telefono[30];
     char direccion[30];
+    int cantidad;
+    int destino;
+    struct User *next;
 }User_t;
 
-typedef struct nodeDonation
-{
-    Donation_t donation;
-    struct nodeDonation* next;
-}nodeDonation_t;
+void obtenerFechaActual(char* fecha) {
+    time_t tiempo;
+    struct tm *fechaActual;
 
-void addNodeDonationStart(nodeDonation_t* head, Donation_t donation){
-    nodeDonation_t* newNode = malloc(sizeof(nodeDonation_t));
-    newNode->donation = donation;
-
-    newNode->next = head->next;
-
-    head->next = newNode;
+    tiempo = time(NULL);
+    fechaActual = localtime(&tiempo);
+    strftime(fecha, 20, "%d/%m/%Y", fechaActual);
 }
 
-void addNodeDonationEnd(nodeDonation_t* head, Donation_t donation){
-    nodeDonation_t* newNode = malloc(sizeof(nodeDonation_t));
-    newNode->donation = donation;
-    newNode->next = NULL;
+void addNodeuser(User_t* head, User_t *user){
 
+    while (head->next != NULL){
+
+        head = head->next;
+
+    }
+    head->next = user;
+
+}
+
+void printNodesUsuarios(User_t* head){
+    while (head!= NULL){
+        printf("%s-\n", head->cedula);
+        head = head->next;
+    }
+}
+
+void freeLinkedUsers(User_t* head){
+    User_t* temp;
+    while (head){
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+void addNodeDonation(Donation_t* head, Donation_t* donation){
+    Donation_t* newNode = malloc(sizeof(Donation_t));
+    newNode->next = NULL;
     while (head->next != NULL){
         head = head->next;
     }
     head->next = newNode;
 }
 
-void printNodesDonations(nodeDonation_t* head){
+void printNodesDonations(Donation_t* head){
     while (head!= NULL){
-        printf("%s-\n", head->donation.cedula);
+        printf("%s-\n", head->cedula);
         head = head->next;
     }
 }
 
-void freeLinkedDonations(nodeDonation_t** head){
-    nodeDonation_t* temp;
-    while (*head != NULL){
-        temp = *head;
-        *head = (*head)->next;
+void freeLinkedDonations(Donation_t* head){
+    Donation_t* temp;
+    while (head){
+        temp = head;
+        head = head->next;
         free(temp);
     }
 }
 
-
-
-
-
-
-int main(){
-    return 0;
+void main(){
+    User_t* usuario=(User_t*)malloc(sizeof(User_t*));
+    if(!usuario){
+        printf("Error!!!");
+        exit(0);
+        }
+    printf("ingrese nombre(pinche usuario todo gay): ");
+    scanf("%s",usuario->nombre);
+    printf("ingrese cedula (usuario burda gay de pana): ",usuario->cedula);
+    scanf("%s",usuario->cedula);
+    printf("factous %s es gay",usuario->nombre);
+    printf("Doxeado tu cedula es %s\n",usuario->cedula);
 }
