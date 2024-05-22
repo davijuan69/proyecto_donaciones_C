@@ -31,7 +31,7 @@ typedef struct Donation{
 }Donation_t;
 
 typedef struct User{
-    char nombre[25];
+    char nombre[40];
     char cedula[30];
     char telefono[30];
     char direccion[30];
