@@ -141,16 +141,18 @@ void freeLinkedUsers(User_t* head){
     }
 }
 
-void addNodeDonation(Donation_t* head, Donation_t* donation){
-    if(!head){
-        printf("ERROR, head no existe");
+void addNodeDonation(Donation_t** head, Donation_t* donation) {
+    if (*head == NULL) {
+        *head = donation;
+    } else {
+        Donation_t* actual = *head;
+        while (actual->next != NULL) {
+            actual = actual->next;
+        }
+        actual->next = donation;
     }
-    donation->next = NULL;
-    while (head->next != NULL){
-        head = head->next;
-    }
-    head->next = donation;
 }
+
 
 
 void freeLinkedDonations(Donation_t* head){
@@ -198,7 +200,7 @@ void realizarDonaciones() {
 
         if (strcmp(aux, "Si") == 0 || strcmp(aux, "si") == 0 || strcmp(aux, "SI") == 0 || strcmp(aux, "sI") == 0) {
             Donation_t* donacion = crearDonacion();
-            addNodeDonation(donaciones, donacion);
+            addNodeDonation(&donaciones, donacion);
             printNodesDonations(donaciones);
             printf("¿Desea realizar otra donación? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
