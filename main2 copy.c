@@ -223,7 +223,25 @@ void realizarDonaciones() {
             printf("¿Desea realizar otra donación? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
-        } else {
+            if (strcmp(respuesta, "No") == 0 || strcmp(respuesta, "no") == 0 || strcmp(respuesta, "NO") == 0 || strcmp(respuesta, "nO") == 0){
+                printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): ");
+                fgets(aux, sizeof(aux), stdin);
+                aux[strcspn(aux, "\n")] = '\0';
+
+                if (strcmp(aux, "Si") == 0 || strcmp(aux, "si") == 0 || strcmp(aux, "SI") == 0 || strcmp(aux, "sI") == 0) {
+                    printf("ingrese la cedula a buscar: ");
+                    fgets(cedula,sizeof(cedula),stdin);
+                        buscarDonacionesPorCedula(donaciones,cedula);}}
+                else{printf("¿Desea seguir registrando usuarios? (Si/No): ");
+                        fgets(respuesta, sizeof(respuesta), stdin);
+                            respuesta[strcspn(respuesta, "\n")] = '\0';
+                        if (strcmp(respuesta, "No") == 0 || strcmp(respuesta, "no") == 0 || strcmp(respuesta, "NO") == 0 || strcmp(respuesta, "nO") == 0) {
+                            freeLinkedUsers(usuarios);
+                            freeLinkedDonations(donaciones);
+                                return;}
+                            }
+                        }   
+        else {
              printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): ");
                 fgets(aux, sizeof(aux), stdin);
                 aux[strcspn(aux, "\n")] = '\0';
