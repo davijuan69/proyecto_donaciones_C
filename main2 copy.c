@@ -177,12 +177,29 @@ void printNodesDonations(Donation_t* head) {
     }
 }
 
+void buscarDonacionesPorCedula(Donation_t* head, char* cedulaABuscar) {
+    printf("\n--- Donaciones para la cédula %s ---\n", cedulaABuscar);
+    while (head != NULL) {
+        if (strcmp(head->cedula, cedulaABuscar) == 0) {
+            printf("Cédula: %s\n", head->cedula);
+            printf("Fecha: %s\n", head->fecha);
+            printf("Tipo: %d\n", head->tipo);
+            printf("Descripción: %s\n", head->descriccion);
+            printf("Valor: %d\n", head->valor);
+            printf("--------------------------\n");
+        }
+        head = head->next;
+    }
+}
+
+
+
 void realizarDonaciones() {
     User_t* usuarios = NULL;
     Donation_t* donaciones = NULL;
     char respuesta[10] = "Si";
     char aux[20];
-
+    char cedula[30];
     while (strcmp(respuesta, "Si") == 0 || strcmp(respuesta, "si") == 0 || strcmp(respuesta, "SI") == 0 || strcmp(respuesta, "sI") == 0) {
         User_t* usuario = crearUsuario();
         addNodeuser(usuarios, usuario);
@@ -206,7 +223,23 @@ void realizarDonaciones() {
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
         } else {
+             printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): ");
+                fgets(aux, sizeof(aux), stdin);
+                aux[strcspn(aux, "\n")] = '\0';
+
+                if (strcmp(aux, "Si") == 0 || strcmp(aux, "si") == 0 || strcmp(aux, "SI") == 0 || strcmp(aux, "sI") == 0) {
+                    printf("ingrese la cedula a buscar: ");
+                    fgets(cedula,sizeof(cedula),stdin);
+                    buscarDonacionesPorCedula(donaciones,cedula);
+            printf("¿Desea realizar una donación? (Si/No): ");
+            fgets(respuesta, sizeof(respuesta), stdin);
+            respuesta[strcspn(respuesta, "\n")] = '\0';
+
             strcpy(respuesta, "No");
+        }
+        else{
+            strcpy(respuesta, "No");
+            }
         }
     }
 
