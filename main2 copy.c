@@ -22,6 +22,11 @@ typedef struct destino{
     int Max_Donaciones;
 }Destino;
 
+typedef struct Need {
+    char name[50];
+    int id;
+} Need_t;
+
 typedef struct Donation{
     char cedula[30];
     char fecha[20];
@@ -29,6 +34,8 @@ typedef struct Donation{
     char descriccion[300];
     int valor;
      struct Donation *next;
+     int amount;
+     int need;
 }Donation_t;
 
 typedef struct User{
@@ -40,6 +47,20 @@ typedef struct User{
     int destino;
     struct User *next;
 }User_t;
+
+Need_t needs[] = {
+    {"Alimento", 1},
+    {"Medicinas", 2},
+    {"Mantenimiento", 3},
+    {"Reparaciones", 4}
+};
+
+void printNeeds() {
+    printf("\n--- Necesidades del refugio ---\n");
+    for (int i = 0; i < sizeof(needs)/sizeof(Need_t); i++) {
+        printf("%d. %s\n", needs[i].id, needs[i].name);
+    }
+}
 
 void obtenerFechaActual(char* fecha) {
     time_t tiempo;
@@ -98,6 +119,17 @@ User_t* crearUsuario() {
 
 Donation_t* crearDonacion() {
     Donation_t* donacion = malloc(sizeof(Donation_t));
+
+    printf("Ingrese la cantidad de la donación: ");
+    char amountStr[10];
+    fgets(amountStr, sizeof(amountStr), stdin);
+    donacion->amount = atoi(amountStr);
+
+    printNeeds();
+    printf("Seleccione la necesidad a la que se destina la donación: ");
+    char needStr[10];
+    fgets(needStr, sizeof(needStr), stdin);
+    donacion->need = atoi(needStr);
 
     printf("\t\t\tIngrese la cédula: ");
     fgets(donacion->cedula, sizeof(donacion->cedula), stdin);
@@ -219,29 +251,10 @@ void realizarDonaciones() {
             Donation_t* donacion = crearDonacion();
             addNodeDonation(&donaciones, donacion);
             printNodesDonations(donaciones);
-            usuario->cantidad=usuario->cantidad+1;
             printf("¿Desea realizar otra donación? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
-            if (strcmp(respuesta, "No") == 0 || strcmp(respuesta, "no") == 0 || strcmp(respuesta, "NO") == 0 || strcmp(respuesta, "nO") == 0){
-                printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): ");
-                fgets(aux, sizeof(aux), stdin);
-                aux[strcspn(aux, "\n")] = '\0';
-
-                if (strcmp(aux, "Si") == 0 || strcmp(aux, "si") == 0 || strcmp(aux, "SI") == 0 || strcmp(aux, "sI") == 0) {
-                    printf("ingrese la cedula a buscar: ");
-                    fgets(cedula,sizeof(cedula),stdin);
-                        buscarDonacionesPorCedula(donaciones,cedula);}}
-                else{printf("¿Desea seguir registrando usuarios? (Si/No): ");
-                        fgets(respuesta, sizeof(respuesta), stdin);
-                            respuesta[strcspn(respuesta, "\n")] = '\0';
-                        if (strcmp(respuesta, "No") == 0 || strcmp(respuesta, "no") == 0 || strcmp(respuesta, "NO") == 0 || strcmp(respuesta, "nO") == 0) {
-                            freeLinkedUsers(usuarios);
-                            freeLinkedDonations(donaciones);
-                                return;}
-                            }
-                        }   
-        else {
+        } else {
              printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): ");
                 fgets(aux, sizeof(aux), stdin);
                 aux[strcspn(aux, "\n")] = '\0';
@@ -250,21 +263,30 @@ void realizarDonaciones() {
                     printf("ingrese la cedula a buscar: ");
                     fgets(cedula,sizeof(cedula),stdin);
                     buscarDonacionesPorCedula(donaciones,cedula);
-            }
-            printf("¿Desea seguir registrando usuarios? (Si/No): ");
+            printf("¿Desea realizar una donación? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
-            if (strcmp(respuesta, "No") == 0 || strcmp(respuesta, "no") == 0 || strcmp(respuesta, "NO") == 0 || strcmp(respuesta, "nO") == 0) {
-                freeLinkedUsers(usuarios);
-                freeLinkedDonations(donaciones);
-                return;
+
+            strcpy(respuesta, "No");
+        }
+        else{
+            strcpy(respuesta, "No");
             }
         }
     }
+
+    printf("Terminando programa...\n");
+
+    freeLinkedUsers(usuarios);
+    freeLinkedDonations(donaciones);
 }
 
 
+
 void main(){
+    Donation_t* donacion = crearDonacion();
+    printf("Donación de %d para la necesidad %d\n", donacion->amount, donacion->need);
+    free(donacion);
     realizarDonaciones();
 
 }
