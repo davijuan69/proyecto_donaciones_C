@@ -4,19 +4,6 @@
 #include <time.h>
 #include <stdbool.h>
 
-/*Desarrollar un sistema de gestión de donaciones para un refugio de animales en el lenguaje
-de programación C, que permita:
-• Registro de donantes: Nombre, cédula, teléfono, dirección.
-• Registro de donaciones: Fecha, tipo de donación (monetaria, material, voluntariado),
-descripción (opcional), valor monetario (si aplica), donante (debe estar registrado).
-• Asignar donaciones monetarias y de materiales a necesidades específicas del
-refugio (alimento, medicinas, mantenimiento, reparaciones, etc.).
-• Gestionar el estado de las donaciones (disponible/no disponible).
-• Listado de cómo se han utilizado las donaciones monetarias y de materiales.
-• Listado de artículos donados, cantidad, fecha de recepción.
-• Listar el detalle de donaciones junto con el donante que la ha realizado.
-• Listar cantidad de donaciones realizadas por donante.*/
-
 typedef struct destino{
     char Nombre_destino;
     int Max_Donaciones;
@@ -57,7 +44,7 @@ Need_t needs[] = {
 
 void printNeeds() {
     printf("\n--- Necesidades del refugio ---\n");
-    for (int i = 0; i < sizeof(needs)/sizeof(Need_t); i++) {
+    for (long long unsigned int i = 0; i < sizeof(needs)/sizeof(Need_t); i++) {
         printf("%d. %s\n", needs[i].id, needs[i].name);
     }
 }
@@ -94,15 +81,15 @@ User_t* crearUsuario() {
     fgets(usuario->nombre, sizeof(usuario->nombre), stdin);
     usuario->nombre[strcspn(usuario->nombre, "\n")] = '\0';
 
-    printf("\t\t\tIngrese la cédula: ");
+    printf("\t\t\tIngrese la cedula: ");
     fgets(usuario->cedula, sizeof(usuario->cedula), stdin);
     usuario->cedula[strcspn(usuario->cedula, "\n")] = '\0';
 
-    printf("\t\t\tIngrese el teléfono: ");
+    printf("\t\t\tIngrese el telefono: ");
     fgets(usuario->telefono, sizeof(usuario->telefono), stdin);
     usuario->telefono[strcspn(usuario->telefono, "\n")] = '\0';
 
-    printf("\t\t\tIngrese la dirección: ");
+    printf("\t\t\tIngrese la direccion: ");
     fgets(usuario->direccion, sizeof(usuario->direccion), stdin);
     usuario->direccion[strcspn(usuario->direccion, "\n")] = '\0';
 
@@ -120,18 +107,18 @@ User_t* crearUsuario() {
 Donation_t* crearDonacion() {
     Donation_t* donacion = malloc(sizeof(Donation_t));
 
-    printf("Ingrese la cantidad de la donación: ");
+    printf("Ingrese la cantidad de la donacion: ");
     char amountStr[10];
     fgets(amountStr, sizeof(amountStr), stdin);
     donacion->amount = atoi(amountStr);
 
     printNeeds();
-    printf("Seleccione la necesidad a la que se destina la donación: ");
+    printf("Seleccione la necesidad a la que se destina la donacion: ");
     char needStr[10];
     fgets(needStr, sizeof(needStr), stdin);
     donacion->need = atoi(needStr);
 
-    printf("\t\t\tIngrese la cédula: ");
+    printf("\t\t\tIngrese la cedula: ");
     fgets(donacion->cedula, sizeof(donacion->cedula), stdin);
     donacion->cedula[strcspn(donacion->cedula, "\n")] = '\0';
 
@@ -142,7 +129,7 @@ Donation_t* crearDonacion() {
     fgets(tipoStr, sizeof(tipoStr), stdin);
     donacion->tipo = atoi(tipoStr);
 
-    printf("\t\t\tIngrese la descripción: ");
+    printf("\t\t\tIngrese la descripcion: ");
     fgets(donacion->descriccion, sizeof(donacion->descriccion), stdin);
     donacion->descriccion[strcspn(donacion->descriccion, "\n")] = '\0';
 
@@ -199,10 +186,10 @@ void freeLinkedDonations(Donation_t* head){
 void printNodesDonations(Donation_t* head) {
     printf("\n--- Lista de Donaciones ---\n");
     while (head != NULL) {
-        printf("Cédula: %s\n", head->cedula);
+        printf("Cedula: %s\n", head->cedula);
         printf("Fecha: %s\n", head->fecha);
         printf("Tipo: %d\n", head->tipo);
-        printf("Descripción: %s\n", head->descriccion);
+        printf("Descripcion: %s\n", head->descriccion);
         printf("Valor: %d\n", head->valor);
         printf("--------------------------\n");
         head = head->next;
@@ -210,13 +197,13 @@ void printNodesDonations(Donation_t* head) {
 }
 
 void buscarDonacionesPorCedula(Donation_t* head, char* cedulaABuscar) {
-    printf("\n--- Donaciones para la cédula %s ---\n", cedulaABuscar);
+    printf("\n--- Donaciones para la cedula %s ---\n", cedulaABuscar);
     while (head != NULL) {
         if (strcmp(head->cedula, cedulaABuscar) == 0) {
-            printf("Cédula: %s\n", head->cedula);
+            printf("Cedula: %s\n", head->cedula);
             printf("Fecha: %s\n", head->fecha);
             printf("Tipo: %d\n", head->tipo);
-            printf("Descripción: %s\n", head->descriccion);
+            printf("Descripcion: %s\n", head->descriccion);
             printf("Valor: %d\n", head->valor);
             printf("--------------------------\n");
         }
@@ -238,12 +225,12 @@ void realizarDonaciones() {
 
         printf("\nDatos del usuario:\n");
         printf("Nombre: %s\n", usuario->nombre);
-        printf("Cédula: %s\n", usuario->cedula);
-        printf("Teléfono: %s\n", usuario->telefono);
-        printf("Dirección: %s\n", usuario->direccion);
+        printf("Cedula: %s\n", usuario->cedula);
+        printf("Telefono: %s\n", usuario->telefono);
+        printf("Direccion: %s\n", usuario->direccion);
         printf("Destino: %d\n", usuario->destino);
 
-        printf("¿Desea hacer una donación? (Si/No): ");
+        printf("¿Desea hacer una donacion? (Si/No): ");
         fgets(aux, sizeof(aux), stdin);
         aux[strcspn(aux, "\n")] = '\0';
 
@@ -251,7 +238,7 @@ void realizarDonaciones() {
             Donation_t* donacion = crearDonacion();
             addNodeDonation(&donaciones, donacion);
             printNodesDonations(donaciones);
-            printf("¿Desea realizar otra donación? (Si/No): ");
+            printf("¿Desea realizar otra donacion? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
         } else {
@@ -263,7 +250,7 @@ void realizarDonaciones() {
                     printf("ingrese la cedula a buscar: ");
                     fgets(cedula,sizeof(cedula),stdin);
                     buscarDonacionesPorCedula(donaciones,cedula);
-            printf("¿Desea realizar una donación? (Si/No): ");
+            printf("¿Desea realizar una donacion? (Si/No): ");
             fgets(respuesta, sizeof(respuesta), stdin);
             respuesta[strcspn(respuesta, "\n")] = '\0';
 
@@ -283,10 +270,11 @@ void realizarDonaciones() {
 
 
 
-void main(){
+int main(){
     Donation_t* donacion = crearDonacion();
-    printf("Donación de %d para la necesidad %d\n", donacion->amount, donacion->need);
+    printf("Donacion de %d para la necesidad %d\n", donacion->amount, donacion->need);
     free(donacion);
     realizarDonaciones();
+    return 0;
 
 }
