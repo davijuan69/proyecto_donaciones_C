@@ -301,7 +301,6 @@ void realizar_Donaciones() {
     }
 
     printf("Terminando programa...\n");
-    imprimir_easter_egg();
     freeLinkedUsers(Users);
     freeLinkeddonaciones(donations);
 }
@@ -309,5 +308,8 @@ int main() {
     int opcion;
     inicializar_necesidades();
     realizar_Donaciones();
+    printf("");
+    getchar();
+    imprimir_easter_egg();
     return 0;
 }
