@@ -243,6 +243,18 @@ Donation_t* donar(Donation_t* donaciones, char* cedulaDonante) {
         return donar(donaciones,cedulaDonante);
     }
 }
+void imprimir_easter_egg(){
+    char line[2000]; // Utilizamos un búfer más grande
+    FILE* archivo = fopen("gojo.txt", "r");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+    } else {
+        while (fgets(line, sizeof(line), archivo) != NULL) {
+            printf("%s", line);
+        }
+        fclose(archivo);
+    }
+}
 
 
 void realizar_Donaciones() {
@@ -289,11 +301,12 @@ void realizar_Donaciones() {
     }
 
     printf("Terminando programa...\n");
-
+    imprimir_easter_egg();
     freeLinkedUsers(Users);
     freeLinkeddonaciones(donations);
 }
 int main() {
+    int opcion;
     inicializar_necesidades();
     realizar_Donaciones();
     return 0;
