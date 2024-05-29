@@ -145,12 +145,7 @@ Donation_t* crear_Donacion(char* cedulaDonante) {
     printf("\t\t\tIngrese la descripción: ");
     fgets(donacion->descripcion, sizeof(donacion->descripcion), stdin);
     donacion->descripcion[strcspn(donacion->descripcion, "\n")] = '\0';
-    if(donacion->tipo==1){
-        printf("\t\t\tIngrese el valor: ");
-        char valorStr[10];
-        fgets(valorStr, sizeof(valorStr), stdin);
-        donacion->valor = atoi(valorStr);
-    }
+
     donacion->next = NULL;
 
     return donacion;
