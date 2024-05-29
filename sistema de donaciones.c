@@ -41,14 +41,14 @@ Need_t needs[] = {
 };
 
 void inicializar_necesidades() {
-    for (int i = 0; i < sizeof(needs) / sizeof(Need_t); i++) {
+    for (long unsigned int i = 0; i < sizeof(needs) / sizeof(Need_t); i++) {
         needs[i].amount_available = needs[i].amount_needed;
     }
 }
 
 void printNeeds() {
      printf("\n--- Necesidades del refugio ---\n");
-    for (int i = 0; i < sizeof(needs) / sizeof(Need_t); i++) {
+    for (long unsigned int i = 0; i < sizeof(needs) / sizeof(Need_t); i++) {
         printf("%d. %s\n", needs[i].id, needs[i].name);
     }
 }
@@ -142,20 +142,15 @@ Donation_t* crear_Donacion(char* cedulaDonante) {
 
     obtenerFechaActual(donacion->fecha);
 
-    printf("\t\t\tIngrese el tipo: ");
-    char tipoStr[10];
-    fgets(tipoStr, sizeof(tipoStr), stdin);
-    donacion->tipo = atoi(tipoStr);
-
     printf("\t\t\tIngrese la descripción: ");
     fgets(donacion->descripcion, sizeof(donacion->descripcion), stdin);
     donacion->descripcion[strcspn(donacion->descripcion, "\n")] = '\0';
-
-    printf("\t\t\tIngrese el valor: ");
-    char valorStr[10];
-    fgets(valorStr, sizeof(valorStr), stdin);
-    donacion->valor = atoi(valorStr);
-
+    if(donacion->tipo==1){
+        printf("\t\t\tIngrese el valor: ");
+        char valorStr[10];
+        fgets(valorStr, sizeof(valorStr), stdin);
+        donacion->valor = atoi(valorStr);
+    }
     donacion->next = NULL;
 
     return donacion;
@@ -234,6 +229,7 @@ Donation_t* donar(Donation_t* donaciones, char* cedulaDonante) {
     buffer[strcspn(buffer, "\n")] = '\0';
     respuesta = atoi(buffer);
    if (respuesta != 1) {
+            printf("saliendo y preparando para cargar nuevo usuario...\n");
             return donaciones;
     } else {
         if (donacion->tipo == 1) {
@@ -245,7 +241,7 @@ Donation_t* donar(Donation_t* donaciones, char* cedulaDonante) {
 }
 void imprimir_easter_egg(){
     char line[2000]; // Utilizamos un búfer más grande
-    FILE* archivo = fopen("gojo.txt", "r");
+    FILE* archivo = fopen("gojo.txt", "r+");
     if (archivo == NULL) {
         printf("Error al abrir el archivo.\n");
     } else {
@@ -283,7 +279,8 @@ void realizar_Donaciones() {
 
         if (respuesta == 1) {
             donations = donar(donations, user->cedula);
-        } 
+        }
+
     }
 
     printf("¿Desea buscar las donaciones que un usuario ha hecho? (Si/No): \n");
@@ -305,10 +302,9 @@ void realizar_Donaciones() {
     freeLinkeddonaciones(donations);
 }
 int main() {
-    int opcion;
     inicializar_necesidades();
     realizar_Donaciones();
-    printf("");
+    printf(" ");
     getchar();
     imprimir_easter_egg();
     return 0;
